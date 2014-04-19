@@ -24,14 +24,14 @@
 \newtheorem{Bsp}[myCounter]{Beispiel}
 \newtheorem{Satz}[myCounter]{Satz}
 
-\title{Repetorium der Gew\"oehlichen DGL}
+\title{Repetorium der Gew\"ohlichen Differenzialgleichung}
 
 \begin{document}
 
 \maketitle
 
 \begin{Def}
-  Als gew\"oehnliche DGL bezeichent man eine Gleichung, in der eine (unbekannte)
+  Als gew\"ohnliche Differenzialgleichung bezeichent man eine Gleichung, in der eine (unbekannte)
   Funktion $u: I \subset \RR \rightarrow \UU \subset \RR^m , t \mapsto w(t)=
   (u_1(t), \dotsc, u_m(t))$ und ihre Abbildung bis zu einer gewissen Ordnung $
   k \in \NN$ auftauchen. \[
@@ -42,22 +42,22 @@
 \end{Def}
 
 \begin{Bem}
-  ``L\"oesung'' bedeutet: $u\in C^k(I,\RR^m)$
+  ``L\"osung'' bedeutet: $u\in C^k(I,\RR^m)$
   \begin{itemize}
-  \item f\"uer $n > 1$ spricht man von einem System
-  \item Gew\"oehnliche DGL der Form \[
+  \item f\"ur $n > 1$ spricht man von einem System
+  \item Gew\"ohnliche Differenzialgleichung der Form \[
     u^{(k)}(t) = \tilde{f}(t,u(t),\dotsc,u^{(k-1)}(t)) \]
-    nennt man \emph{explizite} DGL.
+    nennt man \emph{explizite} Differenzialgleichung.
   \end{itemize}
 \end{Bem}
-Wir betrachten ein System gew\"oehnlicher DGL \emph{erster Ordnung}, d.h.\[
+Wir betrachten ein System gew\"ohnlicher Differenzialgleichung \emph{erster Ordnung}, d.h.\[
   \left\{\begin{aligned} u(t) &= f(t,u(t0)), \quad t \in I \\ u(t_0) &= u_0
   \end{aligned} \right. \]
 ein Anfangswertproblem zum Anfangswert $u_0$.
 
-Eine Allgemeine DGL mit $y(t) = \RR$ \[
+Eine Allgemeine Differenzialgleichung mit $y(t) = \RR$ \[
   y^{(k)}(t) = F(t,\overbrace{y(t),\dotsc,y^{(k-1)}(t)}^{=u(t)}) \]
-l\"aesst sicht immer auf eine DGL erster Ordnung zur\"ueckf\"uehren, denn f\"uer
+l\"asst sicht immer auf eine Differenzialgleichung erster Ordnung zur\"uckf\"uhren, denn f\"ur
 \[ u_1(t):=y(t), u_2(t) := y'(t), \dotsc, u_{k-1}(t)=y^{(k-1)}(t) \] folgt \[
   u'(t) = \begin{pmatrix} u_2(t) \\ \vdots \\ u_k(t) \\ F(t,u(t) \end{pmatrix} =
 : f(t,u(t))) \]
@@ -70,32 +70,32 @@ Definieren $u(t) = z(t), z'(t), z''(t) )$ \[
   \end{pmatrix} = f(t,u(t)) \]
 \end{Bsp}
 
-\section{Existenz und Eindeutigkeit von L\"oesungen}
+\section{Existenz und Eindeutigkeit von L\"osungen}
 
-\paragraph{Picard-Lindel\"oef}
-Betrachten $e'(t) = f(t,u(t)), u(0) = u_0$, $f$ stetig und erf\"uelle die glaobale
+\paragraph{Picard-Lindel\"of}
+Betrachten $e'(t) = f(t,u(t)), u(0) = u_0$, $f$ stetig und erf\"ulle die glaobale
 Lipschizbedingung \[ \exists_{L>0} \forall_{(t,u),(t,v)} : f(t,u) - f(t,v) \leq
-|u-v| \] dann gibt es eine L\"oesung $u \in C^1$.
+|u-v| \] dann gibt es eine L\"osung $u \in C^1$.
 
 \paragraph{Picard Interationsverfahren}
-Im Beweis des Satzes von Picard-Lindel\"oef wird der Banachsche Fixpunktsatz
+Im Beweis des Satzes von Picard-Lindel\"of wird der Banachsche Fixpunktsatz
 benutzt \[ (Tu)(t) = u_0 + \int_0^t f(s,u(s)) \dd s. \]
-Der Banachsche Fixpunktsatz ist Konstuktiv, d.h. f\"uer $u_0$ \emph{beliebig}
+Der Banachsche Fixpunktsatz ist Konstuktiv, d.h. f\"ur $u_0$ \emph{beliebig}
 und $u_{l+1} = Tu_l$ konvergiert die Folge $(u_l)_{l \in \NN}$ gegen die
-L\"oesung $u(t)$.
+L\"osung $u(t)$.
 
 \begin{Bsp}
   \[ \left\{\begin{aligned} u(t)&=t+ u(t) \\ u(0) &= 0 \end{aligned} \right.
     \text{ oder } f(v_1,v_2) = v_1 + v_2 \]
-  \paragraph{Frage} existiert eine eindeutige L\"oesung? Falls ja, geben Sie die
-  L\"oesung explizit an.
+  \paragraph{Frage} existiert eine eindeutige L\"osung? Falls ja, geben Sie die
+  L\"osung explizit an.
 
   Es gilt: $f(t,u) - f(t,v) = 1 (u - v) \rightarrow \text{ Vorraussetzunen von
-  Picard-Linde\"oef erf\"uellt d.h. es gibt eindeutige L\"oesung }$
+  Picard-Linde\"of erf\"ullt d.h. es gibt eindeutige L\"osung }$
 
   Betrachte Iterationsfolge \[
     u_{l+1} - u_0 + \int_0^t f(s,u_l) \dd s \]
-    W\"aehle $u_ 0 = 0$ , dann folgt
+    W\"ahle $u_ 0 = 0$ , dann folgt
   \begin{align*}
     \begin{matrix}
       u_1(t) &= 0 + \int_0^t s + 0 \dd s = \frac{t^2}{2} \\
@@ -111,11 +111,11 @@ L\"oesung $u(t)$.
   u(t)$
 \end{Bsp}
 
-\section{Lineare autonome Systeme von DGLn}
+\section{Lineare autonome Systeme von Differenzialgleichungn}
 
 \begin{Def}
-  Eine autonome (lineare) DGL ist eine explizite DGL, deren rechte Seite nicht
-  explizit von der unabh\"aenigen Variable abh\"aengt. \[
+  Eine autonome (lineare) Differenzialgleichung ist eine explizite Differenzialgleichung, deren rechte Seite nicht
+  explizit von der unabh\"anigen Variable abh\"angt. \[
     u'(t) = A u(t) \]
   wobe  $A \in \RR^{m \times m}$ und $u(t) \in \RR^m$
 \end{Def}
@@ -137,13 +137,13 @@ Fundamentalmatrix $Y_0(t) = e^{tA}$ gegeben nach Vorlesung.
    \end{align*}
 
    $v_i e^{\lambda_i t}$ bildet ein Fundamentalsystem\footnote{Das
-   Fundamentalsystem ist die gesamtheit aller L\"oesungen.}
+   Fundamentalsystem ist die gesamtheit aller L\"osungen.}
      . $Av_i = \lambda v_i$
 
-  Somit L\"oesung $a(t)$ gegeben durch
+  Somit L\"osung $a(t)$ gegeben durch
   \begin{align*}
     u(t) &= Y(t) \begin{pmatrix} cgc_1 \\ c_2 \end{pmatrix} \quad, c_1, c_1 = \text{const
-      (\"ueber Anfangswerte bestimmt)} \\
+      (\"uber Anfangswerte bestimmt)} \\
       &= \begin{pmatrix} c_1 e^{5t} - c_2 e^{-t} \\ 2c_1e^{5t} + c_2e^{-t}
     \end{pmatrix} \\
   u(0) &= \begin{pmatrix} c-1 - c_2 \\ 2 c_1 + c_2 \end{pmatrix} \mathop{=}^!
@@ -165,11 +165,11 @@ e^{5t} + \frac{8}{3} e^{-t} \end{pmatrix} \\
   \end{align*}
 \end{Bsp}
 
-\section{DGL spezieller Form}
-Eie DGL der Folrm \[ u(t) = f(t) g(u(t)) \]
-nennt man eine Dgl mit \emph{getrenten Variablen}
+\section{Differenzialgleichung spezieller Form}
+Eie Differenzialgleichung der Folrm \[ u(t) = f(t) g(u(t)) \]
+nennt man eine Differenzialgleichung mit \emph{getrenten Variablen}
 \begin{Bsp}
-  L\"oesen Sie folgendes Anfangswertproblem $f(t) = t, g(u) = 1 + 2 u$ \[
+  L\"osen Sie folgendes Anfangswertproblem $f(t) = t, g(u) = 1 + 2 u$ \[
     \left\{ \begin{aligned} u'(t) &= t - (1 + (u(t))^2) \\ u(\sqrt{\frac{\pi}{2}})
                                   &= -1 \end{aligned} \right.  \]
   Schreibe 
@@ -190,10 +190,10 @@ nennt man eine Dgl mit \emph{getrenten Variablen}
     = t (1+ (u(t)^2)) \]
 \end{Bsp}
 
-\section{Exacte Dgln}
+\section{Exacte Differenzialgleichungn}
 
 \begin{Def}
-Man nennt eine Dgl der Form \[ g(t,u(t)  + h(t,u(t)) u(T) = 0 \]
+Man nennt eine Differenzialgleichung der Form \[ g(t,u(t)  + h(t,u(t)) u(T) = 0 \]
 exakt, falls eine Funktion $F(t,u)$ existiert, sodass $F_t = g, F_u = h$.
 \end{Def}
 
