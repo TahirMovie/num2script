@@ -1,0 +1,375 @@
+\documentclass[11pt]{book}
+\usepackage{amsfonts}
+\usepackage{ulem}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{mathtools}
+\usepackage{pstricks}
+\usepackage{enumitem}
+\usepackage[a4paper]{geometry}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{amssymb}
+\usepackage{hyperref}
+
+\newtheorem*{thm}{}
+
+\newcommand{\dd}{\mathrm{d}}
+\newcommand{\ee}{\mathrm{e}}
+\newcommand{\RR}{\mathbb{R}}
+\newcommand{\NN}{\mathbb{N}}
+\newcommand{\UU}{\mathcal{U}}
+
+\newcommand{\myTag}[2][]{\tag{#2}\label{#1#2}}
+\newcommand{\myQEDEnd}{\hfill\ensuremath{\square}}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% The folloing styling is largly donated by Robin Lang (uni.robinlang.net)
+
+\geometry{top=2cm, bottom=2.5cm}
+\pagestyle{fancy}
+
+\fancyhead[L]{\normalfont\leftmark}
+
+\fancyhead[R]{\color{gray} Numerische Mathematik I}
+
+\definecolor{dblue}{HTML}{003399}
+\definecolor{top}{HTML}{096B8F}
+\definecolor{code}{HTML}{7C0E78}
+\definecolor{dgray}{gray}{0.80}
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+\definecolor{dkgray}{gray}{0.33}
+
+\titleformat{\chapter}[hang]
+        {\color{dblue}\Huge\bfseries\boldmath\rmfamily}
+        {{\fontsize{90pt}{120pt}\selectfont \thechapter}\fontsize{82pt}{100pt}\selectfont\color{dgray}{|}}
+        {0em}
+        {}
+\titlespacing*{\chapter}{0pt}{-10pt}{15pt}
+
+\title{\fontsize{35pt}{55pt}\selectfont\color{dblue} Numerische Mathematik II \\ \ \\ \Large \textbf{Dozent: } Prof. Dr. Christian Rohde}
+
+\author{\color{dkgray}\textbf{Vorlesungsmitschrieb \footnote{Webseite fuer dieses
+  Dokument \url{https://github.com/jrapp/num2script}}} \ \\ \small{\color{dkgray}Stand \today}}
+\date{\Large\color{dkgray}\textbf{Universität Stuttgart, Wintersemester 2013/2014}}
+
+\renewcommand{\thechapter}{\Roman{chapter}}
+
+
+\theoremstyle{break}
+\newtheoremstyle{myStyle} % name of the style to be used
+  {}      % measure of space to leave above the theorem. E.g.: 3pt
+  {}      % measure of space to leave below the theorem. E.g.: 3pt
+  {}        % name of font to use in the body of the theorem
+  {}          % measure of space to indent
+  {}        % name of head font
+  {\newline}        % punctuation between head and body
+  {0em}       % space after theorem head; " " = normal interword space
+  {\bfseries{#1 \arabic{chapter}.#2} \normalfont[\color{top}#3\color{black}]}        % Manually specify head
+\theoremstyle{myStyle}
+\newcounter{myCounter}[chapter]
+\newtheorem{Def}[myCounter]{Definition}
+\newtheorem{Bem}[myCounter]{Bemerkung}
+\newtheorem{Bsp}[myCounter]{Beispiel}
+\newtheorem{Satz}[myCounter]{Satz}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+
+\maketitle
+\setcounter{tocdepth}{1}
+\tableofcontents
+
+\chapter{Gew\"ohnliche Differentialgleichungen: Ein \"Ueberblick}
+
+\section{Grundlegende Defintionen}
+
+F\"uer \( n \in \mathbb{N} \) sei der \uline{Zustandsraum} \( \mathcal{U} \subseteq
+\mathbb{R}^m \) gegeben. Weiter sei \( f \in C^0(\mathbb{R} \times \mathcal{U})
+\). Au\ss erdem w\"ahle man ein \( t_0 \in \mathbb{R} \) und ein Intervall \( I
+\subseteq \mathbb{R} \) mit \( t_0 \in I \). 
+
+Finde \( u = (u_1,\dotsc,u_m)^T \in C^1(I)^m \) mit \[ u = u(t) \in \mathcal{U} fuer t \in I \] und
+\begin{align*}
+  u'(t) &=f(t,u(t)) \myTag{1.1} \\
+  u(t_0) &= v_0 \myTag{1.2}
+\end{align*}
+\eqref{1.1} hei\ss t \uline{m-dimensionales System ge\"ohnlicher Differentialgleichungen (erster Ordnung)}.
+\eqref{1.1},\eqref{1.2} hei\ss t gew\"ohnliche Anfangeswertproblem.
+
+\begin{Def}[Klassische L\"oesung]
+
+  Falls eine Funktion \( u \in C^1(I)^m \) existiert, die \eqref{1.1}, \eqref{1.2} erf\"uellt,
+hei\ss t \( u \) \uline{klassische L\"oesung}.
+
+\end{Def}
+
+\begin{Bem}[Spezielle Typen]
+  \begin{enumerate}[label=(\roman*)]
+    \item \eqref{1.1} hei\ss t linear gdw. \eqref{1.1} von der Form \[ u'(t) = A(t) u(t) + b(t) (t \in \mathbb{R}) \] ist. Dabei sei \( A = A(t) : \mathbb{R} \Rightarrow \mathbb{R}^{n \times m} \) und \( b = b(t): \mathbb{R} \Rightarrow \mathbb{R}^m \).
+    \item Die Gleichung \eqref{1.1} hei\ss t autonom, falls \[ f(f,u) = f(u) \] gilt.
+  \end{enumerate}
+
+\end{Bem}
+
+\section{Einige Beispiele aus der Modellierung}
+
+\begin{Bsp}[R\"aumliche homogene chemisch aktive Mischung]
+
+Sei \( D \subseteq \mathbb{R}^d, d \in \mathbb{N} \) offen beschrenkt. In \( D \) seien die Stoffe \( A,B, C \) r\"aumlich homogen verteilt.
+\begin{align*}
+  a &= a[A]  & \text{Konzentration von } &A \text{ in}
+  \frac{\text{Mol}}{\text{Volumen}} \\
+  b &= b[B]  & &B  \\
+  c &= c[C]  & &C 
+\end{align*}
+Bimollekulare Reaktion \[ 1 A + 1 B \rightharpoonup 1C \myTag[1.3]{*} \] Wir
+wollen ein quantitatives Modell f\"ur \eqref{1.3*} herleiten. Gesucht sind 
+\begin{align*}
+a &= a(x,t) = a(t) \quad \text{(r\"aumliche Homogenit\"at)} \\
+  b &= b(x,t) = b(t) \\
+  c &= c(x,t) = c(t)
+\end{align*}
+F\"ur \( t_0 = 0 \) sind die Anfangskonzentrationen \[ a(0) = a_0 \geq 0, \quad
+b(0) = b_0 \geq 0, \quad c(0) = c_0 \geq 0 \]
+gegeben. W\"ahle \[ u = (a,b,c)  \in U, U = [0,\inf)^3 \]
+Es sei \( \Delta t > 0 \) und \( t \in [0,\inf ) \)
+\begin{align*}
+  a (t+\Delta t) &= a(t) + \text{Reaktionsverlust/-gewinn in} (t,t+\Delta t) \\
+                 &= a(t) \int_t^{t +\Delta t} R_A(s) \dd s
+\end{align*}
+Dabei sei \( R_A(t) \) der Reaktionsverlusst/-gewinn zum Zeitpunkt t. \\
+\underline{Konstituive Annahme}:
+\[ R_A(t) = - \underbrace{k}_{Reaktionsgeschwindichkeit, > 0}  a(t) b(t) \]
+Also: \[ a(t + \Delta t) = a(t) - \int_t^{t + \Delta t} k a(s) b(s) \dd s \]
+\uline{Regularit\"atsannahme}: \[ a,b,c \in C^1 ([0,\inf)) \]
+Daraus folgt
+\begin{align*}
+  & & a(t + \Delta t) &= a(t) - \Delta t k a(t) b(t) + \mathcal{O} (\Delta t^2) \\
+  &\Leftrightarrow & \frac{a(t+\Delta t) - a(t)}{\Delta t} &= - k a(t) b(t) +
+  \mathcal{O}(\Delta t) \\
+  &\xRightarrow{\Delta t \rightarrow 0} & a'(t) &= - k a(t) + b(t)
+  \myTag[1.3]{**1}
+\end{align*}
+Mit derselben Argumentation gilt
+\[ \begin{aligned}
+  b'(t) &= - k a(t) b(t) \\
+  c'(t) &= + k a(t) b(t)
+\end{aligned} \myTag[1.3]{**} \]
+Wie kann man \eqref{1.3**} l\"oesen ?
+
+F\"uer \( S = a -b \) gilt gerade
+% TODO: Wie funktioniert align richtig fuer solche sachen?
+\begin{align*}
+  S'(t) &= a'(t) - b'(t) & &= 0 \\
+  \Rightarrow S(t) &= a(t) - b(t) & &=: S_0
+\end{align*}
+Auswertung bei \( t = 0\) liefert \[ S_0 = a_0 - b_0 \Leftarrow b(t) = a(t) -
+S_0 \]
+Sei o.B.d.A. \( S_0 \leq 0 (S_0 < 0 \text{ analog}) \). Dann gilt
+\begin{align*}
+a'(t) = - k a(t) (a(t) - S_0)
+\xRightarrow{T.d.V.\footnote{Trennung der Varialen}} a(t) = \frac{a_0 S_0}{a_0 - b_0 e^{-k s_0 t}}
+\Rightarrow b(t) = \frac{a_0 S_0}{a_0 - b_0 e^{-k s_0 t}}-S_0
+\end{align*}
+Au\ss erdem 
+\begin{align*}
+  c(t) &= c_0 +k \int_0^t a(s) b(s) \dd s \\
+       &= c_0 + \int_0^t - b'(t) \dd s \\
+       &= c_0 - b(t) + b_0 \\
+       &= c_0 + b_0 - b(t)
+\end{align*}
+\begin{pspicture}
+  Fig 1
+\end{pspicture}
+
+\end{Bsp}
+
+\begin{Bsp}[CO-Oxidation Platin/Katalyse]
+  \begin{align*}
+    O_2 + Pt + Pt &\xrightleftharpoons[K_{-1}]{K_1} PtO + PtO \\
+    CO + Pt &\rightleftharpoons[K_{-2}]{K_2} PtCO \\
+    PtCo + PtO &\xleftharpoonup{K_3} Pt + Pt + CO_2 \\
+         CO + Pt &\xrightleftharpoons[K_{-4}]{K_4} \underbrace{[PtCO]}_{\text{Chemisch inaktive Variante}}
+  \end{align*}
+  \( k_1,k_{-1},k_2,k_{-2},k_3,k_4,k_{-4} > 0 \) \\
+  Konzentration: ( \( \in [0,1] \) )
+  \begin{align*}
+       PtO&: x \quad & CO_2&: 1 \\
+      PtCO&: y \quad & CO&: 1 \\
+    [PtCO]&: s \quad & O2&: 1\\
+      Pt&: z &&
+  \end{align*}
+  PtO und PtCO werden st\"andig nachgef\"uehrt ( sind in beliebiger konzentration vorhanden)
+  \begin{align*}
+    x'(t) &=   k_1 z z + k_1 1 z z \\
+          &   -k_{-1} x x - L_1 x x \\
+          &   -k_3 x x \\
+          &=  2 k_1 z^2 - 2 k_{-1} x^2 - k_3 x y \\
+    y'(t) &=   k_2 1 z - k_{-2} y - k_3 y x \\
+    z'(t) &= -2k_1 z^2 1 + 2 k_{-1} x^2 - k_1 1  z + k_{-2} y \\
+          &  +2k_3 x y - k_4 z 1 + k_{-4} s \\
+    s'(t) &=   k_4 z - k_{-4} s
+  \end{align*}
+
+  Dieses System ist wahlscheinlich nicht eakt l\"oesbar. Es gilt jedoch noch die
+  globale Invariante \[ x'(t) + y'(t) + s'(t) + z'(t) = 0 \forall_{t>0} \]
+
+\end{Bsp}
+
+\begin{Bsp}[Verbreitung von Ger\"uchte]
+  Sei eine (menschliche) Population der gr\"oe\ss e \( N \in \NN \) gegeben.
+
+  Gesucht: Anzahl der Menschen \( Z= Z(t) \in \UU := [0,N] \), die zum Zeitpunkt
+  \( t \geq 0 \) eine bestimmte Nachricht kennen.\\ 
+  \uline{Kommunikationsmodell:}
+  \begin{enumerate}[label=(\roman*)]
+    \item Zum Zeitpunkt \( t_0 = 0 \) kennen \( z_0 \geq 0 \) Menschen die Nachricht.
+    \item Die Nachricht wird nur duch Gespr\"ache ``unter vier Augen''
+      weitergegeben ( Nachricht = Ger\"uechte).
+    \item Jeder Informierte hat in der Zeitspanne \( \Delta t > 0 \) genau \(
+      k \Delta t\) Vier-Augen-Kontakte mit anderen Menschen (Informierte und
+      nicht-Informierte)
+  \end{enumerate}
+  Falls wir mit \( q(t) \in [0,1] \) den Anteil der Nichtinformierten
+  bezeichnen, gilt \[ q(t) N = N - Z(t) \myTag[1.5]{*} \]
+  Da die Zuname von Z im Zentrum \( \Delta t \) kann man durch
+  \begin{align*}
+    Z(t + \Delta t) & = Z(t) + q k \Delta t Z(t) \\
+                    &\overset{\eqref{1.5*}}{=}Z(t) + k \Delta t \frac{N-Z(t)}{N} Z(t)
+  \end{align*}
+  beschreiben.
+
+  Mit der Annahme \( Z \in C^1([0,\inf],\UU) \) gilt im Limes \( \Delta t \rightarrow 0 \)
+  das gew\"ohnliche AWP \[ Z'(t) = k \frac{N-Z(t)}{N} Z(t) , Z(0) = Z_0
+  \myTag[1.5]{**} \]
+
+  \begin{pspicture}
+    Fig 2: Langzeitverhalten von Z(t)
+  \end{pspicture}
+  
+  Wie kann man \eqref{1.5**} numerisch L\"oesen? Auf der Basis des diskreten Modells kann man den Algorithmus
+  \begin{align*}
+    Z^{n+1} &= Z^n + \Delta t k \frac{N-Z^n}{N}Z^n, \quad (N \in \NN) \\
+    Z^0 &= Z_0
+  \end{align*}
+  konstruieren. Dabei ist \( Z^n \) eine Approximation \( Z(n \Delta t ) \)
+\end{Bsp}
+
+\begin{Bsp}[Bewegunsgleichungen]
+  Fuer \( N \in \NN \) betrachten wir die d-dimesionale Bewegung von Masseteilchen \( p_i ( i=1,\dotsc,N) \) mit Masse \( m_i > 0 \)
+  Anwendungen: z.B. die Dynamik von Planeten, Sandk\"oernern oder die Molek\"uldynamik.
+  Gesucht: Position \( x_i = x_i(t) \in \RR^d, i = 1,\dotsc,N \) des Masseteilchen \( p_i \) zum Zeitpunkt \( t > 0 \)
+
+  Wir schr\"anken uns auf Bewegungen ein, die unter Einfluss einens Potentialfelds \( V:\RR^{dN} \leftarrow \RR \) stattfinden. Falls das Potentialfeld duch ein Gravitationsfeld gegeben ist, gilt z.B.
+  \[ V(x_1,\dotsc,x_N) = \sum_{j \neq k, (j,k) = 1,\dotsc,N } \frac{m_j m_k}{|| x_j - x_k||_2} \]
+  nach dem Newtischen Gesetz gilt dann \[ m_i x_i''(t) = - \frac{\partial V}{\partial x_i} (x_1(t),\dotsc,x_N(t)) \]
+  % Vorlesung 2014-04-16
+  Daher ist
+  \[ \frac{\partial}{\partial x_i} V(x_1,\dotsc,x_N) = \begin{pmatrix}
+        \frac{\partial}{\partial x_i1} V(x_1, \dots, x_N) \\
+        \vdots \\
+        \frac{\partial}{\partial x_id} V(x_1, \dots, x_N)
+  \end{pmatrix} \] 
+  F\"uer das Gravitationspotenzial gilt peziell \[ m x_i'')t) = m_i
+    \sum_{\stackrel{j=1}{j \neq i}^N} \frac{m_j}{| x_i(t)-x_j(t)|_2^3}
+    (x_i(t)-x_j(t)) \]
+  Zum Zeitpunkt \( t= 0 \) sind die Anfangspositionen- und -geschwindichkeiten
+  durch \[ x_i(0) x^0_i \in \RR^a, x^0_i(0) = v^0_i \in \RR^a \]
+  Dabei sein \( x_1^0,\dotsc,x_n^0 \) paarweise verschieden.
+
+  Wir schreiben dieses AWP (zweiter Ordnung) in erin \( (2dN) \) --
+  dimensionales System erster Ordnung um. Deibei sei \[ 
+    u(t) = \begin{pmatrix} u_1(t) \\ \vdots  \\ 
+      u_{2N}(t) \end{pmatrix} = \begin{pmatrix} x_1(t) \\ x'_1(t) \\ x_2(t) \\ x'_2
+      \\\vdots  \\
+u_{2N}(t) \end{pmatrix} \]
+
+  Damit erhalten wir f\"uer \( u \) das AWP \begin{align*}
+    u'(t) &= \begin{pmatrix} u_1(t) \\
+        \frac{-1}{m_1} \frac{\partial}{\partial x_1} V(u_1(t),u_3(t), \dotsc, u_{2N-1}(t)) \\
+        u_4(t) \\ \vdots \\ 
+        \frac{-1}{m_N}\frac{\partial}{\partial x_N} V(u_1(t),u_3(t), \dotsc, u_{2N-1}(t)) 
+    \end{pmatrix} \myTag[1.6]{*} \\
+    u(0) &= (x_2^0, v_1^0, x_2^0, \dotsc, v_2^0)^T
+  \end{align*}
+  Damit ist gerade \[ \UU = \{ (x_1,v_1,\dotsc,x_N,v_N)\in\RR^{2dN} |
+    x_1,\dotsc,x_N \text{ paarwerise verschieden} \} \]
+  Im Graviationsfall sollte \eqref{1.6*} eine klassische L\"oessung auf \(
+  I=[0,\infty] \) besitzen (, wenn die physikalische Realit\"ate korret
+  beschreibt). \\
+  F\"uer \eqref{1.6*} ist die ``nat\"uerliche'' Energie gerade \begin{align*} E(t) =
+    \text{kinetische Energie} + \text{Potentialenergie} \\
+    &= \frac{1}{2} \sum_{i=1}^N m_i (x_i'(t))^2 + V(x_1(t),\dotsc, x_N(t))
+  \end{align*}
+  Wir multiplizieren das Newtonsche Kraftgesetz mit \( x_i(t) \)
+  \begin{align*}
+    m_i\underbrace{x''_i(t) x'_i(t)}{= (\frac{x'_i(t)^2}{2})'} = - x'_i(t)
+    \frac{\partial}{\partial x_i} V(x_1(t),\dotsc,x_1(t)) \\
+    \Rightarrow \sum_{i=1}^N m_i (\frac{(x'_i(t))^2}{2})' = - \sum_{i=1}^N
+    x'_i(t) \frac{\partial}{\partial x_i} V(x_1(t),\dotsc,x_N(t)) \\
+    \Rightarrow \sum_{i=1}^N (m_i (\frac{(x'_i(t))^2}{2})' +
+    V(x_1(t),\dotsc,x_1(t))' = 0
+    \Rightarrow \frac{\dd}{\dd t} E(t) = 0
+  \end{align*}
+  Falls eine klassische L\"oesung in \( [0, \infty] \) existiert, haben wir \[
+    E(t) = E(0) = \sum_{i = 1}^N \frac{1}{2}m_i(v_i^0)^2 + V(x_1^0,\dotsc,x_N^0)
+  \]
+  \( E \) ist also eine globale Invariante!
+  
+  \myQEDEnd
+\end{Bsp}
+
+\begin{Bsp}[L\"oessungsintervalle]
+  Sei \( m = 1 \) und \( u_0 = 0 \). F\"uer \( a \in \RR \) betrachtet das AWP 
+  \begin{align*}
+    u'(t) = U(t)^2 + a, \quad (t\in I) \\
+    u(0) = U_0 = 0
+  \end{align*}
+  \begin{enumerate}[label=(\alph*)]
+    \item \( a = 0 \Rightarrow u(t) = 0 \) auf \( I = \RR \) \\
+    \item \( a < 0 \Rightarrow u = u(t) = - \sqrt{-a} \tanh(\sqrt{-1} t) \) auf
+      \( I = \RR \) \\
+    \item \( a > 0 \Rightarrow u = u(t) = \sqrt{a} \tan(\sqrt{a} t) \) auf \( I
+      = (-\frac{\pi}{2\sqrt{a}},\frac{\pi}{2\sqrt{a}}) \subsetneq \RR \)
+  \end{enumerate}
+\end{Bsp}
+
+\begin{Bsp}[Eindeutigkeit]
+  Sei \( m= 1, a_0 = 0 \). Betrachte das AWP \[ u'(t) = \sqrt{u(t)}, u(0)=0 \]
+  Es existiert die L\"oesungen \[ u_1(t) = 0, \quad u_2(t) = \frac{t^2}{u},
+    \quad u_3(t) = \left\{\begin{aligned} 0, t< 0 \\ \frac{t^2}{4}, t \geq 0
+    \end{aligned} \right. \]
+    auf ganz \( \RR \)
+
+    \myQEDEnd
+\end{Bsp}
+
+F\"uer einen Zusandsraum \( \UU \subseteq \RR^m, u_0 \in \UU, t_0 \in \RR \)
+betrachen wir \eqref{1.1},\eqref{1.2}, d.h. \[ u'(t) = f(t,U(t)), u(0) = u_0 \]
+Dann gilt
+\begin{Satz}[Picard-Lindel\"oef]
+  Sei \( a > 0 \) und weiter \( b \geq 0 \) so gew\"awhlt, dass \(
+  \overline{B_b(u_0)} \subset \UU \) gilt. Au\ss erdem sei \( L = L(a,b,u_0) > 0 \)
+  eine Konstante, sodass alle \(t \in [t_0-a,t_0+a] \) und alle \( w,\tilde{w}
+  \in \overline{B_b(u_0)} \) gerade \[ |f(t,w) - f(t,\tilde{w})| \leq L |w -
+    \tilde{w}
+  | \] gildt (Lipschitz-Stetigkeit in \( [t_0-a,t_0+a] \times \overline{B_b(u_0)} \)
+  )
+  Dann haben wir
+  \begin{enumerate}[label=(\roman*)]
+  \item Es existiert eine Zahl \( \alpha \in (0,a], sodass \eqref{1.1}
+    \eqref{1.2} \) eine L\"oesung \( u \in C^1(t_0-a,t_0+a,\UU) \) besitzt \\
+  \item Es existiert genau eine L\"oesung von \eqref{1.1},\eqref{1.2} in \(
+    t_0-a,t_0+a \) \\
+  \item F\"uer \( \alpha \) in (i),(ii) gilt in Falle \( \UU = \RR^m, \) \[
+      \alpha = \min{a, \frac{b}{A}}, \quad A := \max_{\stackrel{t\in
+         [t_0-a,t_0+a]}{w \in \overline{B_b(u_0)}}} \] gilt
+  \end{enumerate}
+\end{Satz}
+
+
+\end{document}

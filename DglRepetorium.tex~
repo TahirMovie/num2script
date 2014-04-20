@@ -25,6 +25,7 @@
 \newtheorem{Satz}[myCounter]{Satz}
 
 \title{Repetorium der Gew\"ohlichen Differenzialgleichung}
+\author{Mitschrieb von Jan Rapp}
 
 \begin{document}
 
@@ -54,6 +55,7 @@ Wir betrachten ein System gew\"ohnlicher Differenzialgleichung \emph{erster Ordn
   \left\{\begin{aligned} u(t) &= f(t,u(t0)), \quad t \in I \\ u(t_0) &= u_0
   \end{aligned} \right. \]
 ein Anfangswertproblem zum Anfangswert $u_0$.
+
 
 Eine Allgemeine Differenzialgleichung mit $y(t) = \RR$ \[
   y^{(k)}(t) = F(t,\overbrace{y(t),\dotsc,y^{(k-1)}(t)}^{=u(t)}) \]
@@ -101,7 +103,7 @@ L\"osung $u(t)$.
       u_1(t) &= 0 + \int_0^t s + 0 \dd s = \frac{t^2}{2} \\
       u_2(t) &= 0 + \int_0^t s + \frac{s^2}{2} \dd s = \frac{t^2}{2} + \frac{t^3}{3!} \\
       \vdots \\
-      u_m(t) &= \frac{t^2}{2} + frac{t^3}{3!} + \dotsb + \frac{t^{m+1}}{(m=1)!}
+      u_m(t) &= \frac{t^2}{2} + \frac{t^3}{3!} + \dotsb + \frac{t^{m+1}}{(m=1)!}
     \end{matrix}
   \end{align*}
 

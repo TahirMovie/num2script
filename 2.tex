@@ -1,0 +1,177 @@
+\begin{proof}
+  O.B.d.A. sei \( I = [t_0-a,t_0+a] \) und zun\"achst \(\UU = \RR \)
+  \begin{enumerate}[label=(\roman*)]
+    \item Wir betrachten das Fixpunktproblem \[ u(t) = T[u](t), t\in I
+      \myTag[1.9]{*} \] f\"uer die unbekannte Funktion \( u \in C^0(I,\RR^m) \).
+      Babei sie  \( T \) durch \[ T : \left\{ \begin{aligned} C^0 (I)
+            \longrightarrow C^0(I) \\ u \arrowWithVert|\longleftarrow T[u](t) := U_0 +
+        \int_{t_0}^t f(s,u(s)) \dd s \end{aligned} \right. \] Falls eine L\"oesung \( u
+        \in C^0(I, \RR^m) \) von \eqref{1.9*} existiert, gelt auch \( u \in
+        C^1(I,\RR^m) \). Dann ergibt Differentiation die Fixpunktgleichung \[
+        u(t) = T[u](t) = u_0 + \int_{t_0}^t f(s,u(s)) \dd s\] gerade
+        \eqref{1.1}. Da auch \( u(0) = u_0 \) gilt, haben wir eine L\"oesung
+        gefunden.
+
+        Weiter gelte die globale lipschitschbedingung \[ |f(t,u) - f(t,
+          \tilde{u}
+          )| \leq L | w - \tilde{w} | \forall_{t\in I, w,\tilde{w} \in \RR}
+          \myTag[1.9]{**} \] Sei \( \beta > 0 \) beliebig aber gest. Der Raum
+          \[X= (C^0(I,\RR^m),||.||_\beta ) \] mit \[ || w||_\beta =
+          max{|w(t)| e^{-bt} | t\in I } \] ist ein Banachraum. Es gilt f\"uer
+          den abgeschlossenen Teilbaum \( D=X\subseteq X \) gelte \[ T(D)
+          \subseteq D. \] Es gilt f\"uer  \( w, \tilde{w} \in D \) und \( t \in I
+          \) \[ T[w](t)-T[\tilde{w}](t) | 
+            = | \int_{t_0}^t f(s,w(s))-f(s,\tilde{w}(s)
+            ) \dd s | \leq \int_{t_0}^t \underbrace{| f(s,w(s))
+            -f(s,\tilde{w}(s))|}{ \leq L |w(s)-\tilde{w}(s)|}
+            \underbrace{e^{-\beta s} e^{\beta s}}{ = 1} \dd s
+            \leq || w \tilde{w}||_\beta
+        \]
+
+        %TODO: Rest Beweis
+        % Vorlesung 2014-04-16 Ende
+
+    Im n\"chsten Schritt beweisen wir die Existenz einer L\"oersung von \eqref{1.1},
+    \eqref{1.2} ohne die Einschrenkung auf globale Libschitzstetigkeit von \( f \).
+    Dazu betrachte man das ``abgeschnittene'' Problem
+    \[ \bar{u}'(t)=\bar{f}(t,\bar{u}(t)), \bar{u}9)) = u_0. \]
+    Dabei sei \( \bar{f} \in C^0(I\times \RR^m, \RR^m) \) eine Funktion mit 
+    \begin{enumerate}[label=(\arab*)]
+      \item \( \bar{f}(t,w) = f(t,w) \forall_{w\in\overline{B_b(u_0)} \) (2)
+          \( \bar{f} \) erf\"uellt \eqref{1.9**} f\"uer f\"ur ein  \( L =
+          \bar{L} > 0 \)
+      \item \( max_{\substack{t \in I, w \in \RR^m}} {|\bar{f}(t,w)|} \leq A \)
+    \end{enumerate} 
+    Mit diesen Vorraussetzungen existiert nun eine L\"oesung (\triangle) in \(
+    I=[t_0,t_0+a] \)
+    Es gilt f\"uer \( t \in I \) \[ | \bar{u}'(t) \leq | \bar{f}(t,\bar{u}(t)|
+    \stackrel{\text{(3)}}{\leq} A \] Also kann man \[ \bar{u}(t) \in B_b(u_0) \text{
+    f\"uer } t \in [t_0,t_0+\alpha) \] mit \[ \alpha = \min{a,\frac{b}{A}}. \]
+    garantieren. \\
+    Da \( \overline{B_b(u_0)} \subseteq \UU \) gilt, muss \[ \bar{\UU}\in U
+    \text{ f\"ur } t \in  [t_0,t_0+\alpha] \] gelte. Dann ist \( \bar{u} \) aber
+    eine L\"oesung von \eqref{1.1}, \eqref{1.2} (nach (1)). Damit sind (i) und
+    (iii) bewiesen.
+
+    \item Da \( u \in C^1(I, \UU) \) als L\"oesung von \eqref{1.1}, \eqref{1.2}
+      automatisch ein Fixpunkt in \( T \) ist, muss \( u \) ( als eindeutiger Fixpunkt )
+      auch eindeutig bestimt sein.
+      \myQEDEnd
+  \end{enumerate}
+\end{proof}
+
+In einigen F\"allen kann die lokale L\"oesbarkeit auf globale L\"oesbarkeit
+\"uebertragen werden.
+
+\begin{Kor}[Globale L\"oesbarkeit] \indexWhat{Globale L\"oesugn}\label{1.10}
+  Es glelte die \uline{A-Priori Absch\"aetzung} \[ u \in C^1(\RR,\UU) sei 
+  \text{(globale L\"oesung) \eqref{1.1}, \eqref{1.2}.} \\ 
+  \Rightarrow \exists_{\bar{b} > 0} \max_{\substack t \in \RR} \jNorm{U - u_0}
+  \leq \bar{b} \]
+  F\"uer \( f \in \C^1(\RR\ times \UU, |RR^m) \) ist \eqref{1.1}, \eqref{1.2}
+  global L\"oesbar.
+\end{Kor}
+\begin{proof} [H\"Ue] \myQEDEnd 
+\end{proof}
+\begin{Bsp}[nochmal die Bewegungsgleichungen]
+  Man betrachte die Gleichungen aus Bsp 1.6. F\"uer jede L\"oesung \( (x(t),
+  x'(t)) \) gilt gerade \[ \dfrac{d}{dt} E(t) = \dfrac{d}{dt}(\sum_{i=1}^N
+  \frac{m_i | x'_i (t)|^2}{2} + V(x_1,\dotsc,x_N)) = 0 \] Insbesondere gilt dann
+  \[ \sum_{i=0}^N m_i \frac{|x'_i(t)|^2}{2} + V(x_1,\dotsc,x_N) \leq E(Q)
+  \myTag[1.11](*) \]
+  Falls z.B. \( V(x_1,\dotsc,x_N) \rightarrow \infty \) \f"uer \( |x_1|,\dotsc,|x_N|
+  \rightarrow \infty \) gilt, ergibt \eqref{1.11*}, dass die L\"oesugn \( x_1,
+  \dotsc, x_N, x'_1, \dotsc, x'_N \) global beschr\"aenkt sind. Dann liefert
+  \ref{1.10} dir globale L\"oesbarkeit.
+  \myQEDEnd
+\end{Bsp}
+
+\chapter{Numerische Verfahren f\"uer Anfanswertproobleme}
+
+\section{Einschrittverfahren}
+
+Wir betrachten \Fuer \( f\in C^0(I\tmes \RR^m, \RR^m) \) mit \( I = [0,T] \) (
+und \( U = \RR^m \) ) das Problem \eqref{1.1}, \eqref{1.2}. Es exisitert genau
+eine L\"oesung \[ u \in C^1(I, \RR^m) \]
+Um ein numerisches Verfahren zur Approximation von \( u \) zu konstruieren, sei
+f\"uer \( N \in \NN \) der Vector \[ h:= (h_0,\dotsc,h_N-1)^T \in ((0,T])^N \]
+mit \[ \sum_{j=0}^{N-1}h_j=T  \]
+Weiter Konstruiren wir ein \uline{Gitter \( I_k \) zu \( I \) } duch \[
+  I_k = {t_0 = 0, t_1, t_2, \dotsc, t_N}. \]
+Weiter f\"uer \( j= 1,\dotsc,N \) gelte \[t_j := t_{j-1} _ h_{j-1} \text{also
+insbesondere} \] 
+
+Als \uline{Gitterweite von \( I_k  \)} bezeichen wir die Zahl \[ |h| =
+  \max{substack j = 0,\dotsc,N-1}{h_j} \]
+Dalls \( h_0 = h_1 = \cdots = h_{N-1} \) gilt, sprechen wir von einem
+\uline{\"aequidistanten Gitter}. \\
+Ziel der Einschrittverfahren ist die Bestimmung einer\uline{Gitterfunktion}
+$u_k:I_k\rightarrow\RR^m$ f\"uer gegebene Gitter.
+
+\begin{Def}[Explizite Einschrittverfahren]
+  Sei ein Gitter $I_k$ gegeben und sei \[
+    \phi \in C^0(I^2\times \RR^m,\RR^m) \]
+  gegeben. Dann hei\ss t das Verfahren \[
+    u_j = u_{j-1} + h_{j-1} \phi (h_{j-1},t_{t-1},u_{j-1}), (j = 1,\dotsc,N) \]
+    explizites \uline{Einschrittverfahren} (ESV) und \phi
+    \uline{Incrementfunktion}
+\end{Def}
+
+
+In einigen F\"allen kann die lokale L\"oesbarkeit auf globale L\"oesbarkeit
+\"uebertragen werden.
+
+\begin{Kor}[Globale L\"oesbarkeit] \indexWhat{Globale L\"oesugn}\label{1.10}
+  Es glelte die \uline{A-Priori Absch\"aetzung} \[ u \in C^1(\RR,\UU) sei 
+  \text{(globale L\"oesung) \eqref{1.1}, \eqref{1.2}.} \\ 
+  \Rightarrow \exists_{\bar{b} > 0} \max_{\substack t \in \RR} \jNorm{U - u_0}
+  \leq \bar{b} \]
+  F\"uer \( f \in \C^1(\RR\ times \UU, |RR^m) \) ist \eqref{1.1}, \eqref{1.2}
+  global L\"oesbar.
+\end{Kor}
+\begin{proof} [H\"Ue] \myQEDEnd 
+\end{proof}
+\begin{Bsp}[nochmal die Bewegungsgleichungen]
+  Man betrachte die Gleichungen aus Bsp 1.6. F\"uer jede L\"oesung \( (x(t),
+  x'(t)) \) gilt gerade \[ \dfrac{d}{dt} E(t) = \dfrac{d}{dt}(\sum_{i=1}^N
+  \frac{m_i | x'_i (t)|^2}{2} + V(x_1,\dotsc,x_N)) = 0 \] Insbesondere gilt dann
+  \[ \sum_{i=0}^N m_i \frac{|x'_i(t)|^2}{2} + V(x_1,\dotsc,x_N) \leq E(Q)
+  \myTag[1.11](*) \]
+  Falls z.B. \( V(x_1,\dotsc,x_N) \rightarrow \infty \) \f"uer \( |x_1|,\dotsc,|x_N|
+  \rightarrow \infty \) gilt, ergibt \eqref{1.11*}, dass die L\"oesugn \( x_1,
+  \dotsc, x_N, x'_1, \dotsc, x'_N \) global beschr\"aenkt sind. Dann liefert
+  \ref{1.10} dir globale L\"oesbarkeit.
+  \myQEDEnd
+\end{Bsp}
+
+\chapter{Numerische Verfahren f\"uer Anfanswertproobleme}
+
+\section{Einschrittverfahren}
+
+Wir betrachten \Fuer \( f\in C^0(I\tmes \RR^m, \RR^m) \) mit \( I = [0,T] \) (
+und \( U = \RR^m \) ) das Problem \eqref{1.1}, \eqref{1.2}. Es exisitert genau
+eine L\"oesung \[ u \in C^1(I, \RR^m) \]
+Um ein numerisches Verfahren zur Approximation von \( u \) zu konstruieren, sei
+f\"uer \( N \in \NN \) der Vector \[ h:= (h_0,\dotsc,h_N-1)^T \in ((0,T])^N \]
+mit \[ \sum_{j=0}^{N-1}h_j=T  \]
+Weiter Konstruiren wir ein \uline{Gitter \( I_k \) zu \( I \) } duch \[
+  I_k = {t_0 = 0, t_1, t_2, \dotsc, t_N}. \]
+Weiter f\"uer \( j= 1,\dotsc,N \) gelte \[t_j := t_{j-1} _ h_{j-1} \text{also
+insbesondere} \] 
+
+Als \uline{Gitterweite von \( I_k  \)} bezeichen wir die Zahl \[ |h| =
+  \max{substack j = 0,\dotsc,N-1}{h_j} \]
+Dalls \( h_0 = h_1 = \cdots = h_{N-1} \) gilt, sprechen wir von einem
+\uline{\"aequidistanten Gitter}. \\
+Ziel der Einschrittverfahren ist die Bestimmung einer\uline{Gitterfunktion}
+$u_k:I_k\rightarrow\RR^m$ f\"uer gegebene Gitter.
+
+\begin{Def}[Explizite Einschrittverfahren]
+  Sei ein Gitter $I_k$ gegeben und sei \[
+    \phi \in C^0(I^2\times \RR^m,\RR^m) \]
+  gegeben. Dann hei\ss t das Verfahren \[
+    u_j = u_{j-1} + h_{j-1} \phi (h_{j-1},t_{t-1},u_{j-1}), (j = 1,\dotsc,N) \]
+    explizites \uline{Einschrittverfahren} (ESV) und \phi
+    \uline{Incrementfunktion}
+\end{Def}
+
