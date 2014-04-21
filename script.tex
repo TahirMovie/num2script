@@ -5,14 +5,16 @@
 \usepackage{amsthm}
 \usepackage{mathtools}
 \usepackage{pstricks}
-\usepackage{enumitem}
+\usepackage{enumerate}
 \usepackage[a4paper]{geometry}
 \usepackage{fancyhdr}
 \usepackage{titlesec}
 \usepackage{amssymb}
 \usepackage{hyperref}
+\usepackage{pdfsync}
 
 \newtheorem*{thm}{}
+% TODO what to do with labels and Index
 
 \newcommand{\dd}{\mathrm{d}}
 \newcommand{\ee}{\mathrm{e}}
@@ -32,7 +34,7 @@
 
 \fancyhead[L]{\normalfont\leftmark}
 
-\fancyhead[R]{\color{gray} Numerische Mathematik I}
+\fancyhead[R]{\color{gray} Numerische Mathematik 2}
 
 \definecolor{dblue}{HTML}{003399}
 \definecolor{top}{HTML}{096B8F}
@@ -50,7 +52,7 @@
         {}
 \titlespacing*{\chapter}{0pt}{-10pt}{15pt}
 
-\title{\fontsize{35pt}{55pt}\selectfont\color{dblue} Numerische Mathematik II \\ \ \\ \Large \textbf{Dozent: } Prof. Dr. Christian Rohde}
+\title{\fontsize{35pt}{55pt}\selectfont\color{dblue} Numerische Mathematik 2 \\ \ \\ \Large \textbf{Dozent: } Prof. Dr. Christian Rohde}
 
 \author{\color{dkgray}\textbf{Vorlesungsmitschrieb \footnote{Webseite fuer dieses
   Dokument \url{https://github.com/jrapp/num2script}}} \ \\ \small{\color{dkgray}Stand \today}}
@@ -75,6 +77,7 @@
 \newtheorem{Bem}[myCounter]{Bemerkung}
 \newtheorem{Bsp}[myCounter]{Beispiel}
 \newtheorem{Satz}[myCounter]{Satz}
+\newtheorem{Kor}[myCounter]{Korolar}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{document}
@@ -87,7 +90,7 @@
 
 \section{Grundlegende Defintionen}
 
-F\"uer \( n \in \mathbb{N} \) sei der \uline{Zustandsraum} \( \mathcal{U} \subseteq
+F\"ur \( n \in \mathbb{N} \) sei der \uline{Zustandsraum} \( \mathcal{U} \subseteq
 \mathbb{R}^m \) gegeben. Weiter sei \( f \in C^0(\mathbb{R} \times \mathcal{U})
 \). Au\ss erdem w\"ahle man ein \( t_0 \in \mathbb{R} \) und ein Intervall \( I
 \subseteq \mathbb{R} \) mit \( t_0 \in I \). 
@@ -100,15 +103,15 @@ Finde \( u = (u_1,\dotsc,u_m)^T \in C^1(I)^m \) mit \[ u = u(t) \in \mathcal{U} 
 \eqref{1.1} hei\ss t \uline{m-dimensionales System ge\"ohnlicher Differentialgleichungen (erster Ordnung)}.
 \eqref{1.1},\eqref{1.2} hei\ss t gew\"ohnliche Anfangeswertproblem.
 
-\begin{Def}[Klassische L\"oesung]
+\begin{Def}[Klassische L\"osung]
 
-  Falls eine Funktion \( u \in C^1(I)^m \) existiert, die \eqref{1.1}, \eqref{1.2} erf\"uellt,
-hei\ss t \( u \) \uline{klassische L\"oesung}.
+  Falls eine Funktion \( u \in C^1(I)^m \) existiert, die \eqref{1.1}, \eqref{1.2} erf\"ullt,
+hei\ss t \( u \) \uline{klassische L\"osung}.
 
 \end{Def}
 
 \begin{Bem}[Spezielle Typen]
-  \begin{enumerate}[label=(\roman*)]
+  \begin{enumerate}[(i)]
     \item \eqref{1.1} hei\ss t linear gdw. \eqref{1.1} von der Form \[ u'(t) = A(t) u(t) + b(t) (t \in \mathbb{R}) \] ist. Dabei sei \( A = A(t) : \mathbb{R} \Rightarrow \mathbb{R}^{n \times m} \) und \( b = b(t): \mathbb{R} \Rightarrow \mathbb{R}^m \).
     \item Die Gleichung \eqref{1.1} hei\ss t autonom, falls \[ f(f,u) = f(u) \] gilt.
   \end{enumerate}
@@ -118,73 +121,72 @@ hei\ss t \( u \) \uline{klassische L\"oesung}.
 \section{Einige Beispiele aus der Modellierung}
 
 \begin{Bsp}[R\"aumliche homogene chemisch aktive Mischung]
+  Sei \( D \subseteq \mathbb{R}^d, d \in \mathbb{N} \) offen beschrenkt. In \( D \) seien die Stoffe \( A,B, C \) r\"aumlich homogen verteilt.
+  \begin{align*}
+    a &= a[A]  & \text{Konzentration von } &A \text{ in}
+    \frac{\text{Mol}}{\text{Volumen}} \\
+    b &= b[B]  & &B  \\
+    c &= c[C]  & &C 
+  \end{align*}
+  Bimollekulare Reaktion \[ 1 A + 1 B \rightharpoonup 1C \myTag[1.3]{*} \] Wir
+  wollen ein quantitatives Modell f\"ur \eqref{1.3*} herleiten. Gesucht sind 
+  \begin{align*}
+  a &= a(x,t) = a(t) \quad \text{(r\"aumliche Homogenit\"at)} \\
+    b &= b(x,t) = b(t) \\
+    c &= c(x,t) = c(t)
+  \end{align*}
+  F\"ur \( t_0 = 0 \) sind die Anfangskonzentrationen \[ a(0) = a_0 \geq 0, \quad
+  b(0) = b_0 \geq 0, \quad c(0) = c_0 \geq 0 \]
+  gegeben. W\"ahle \[ u = (a,b,c)  \in U, U = [0,\inf)^3 \]
+  Es sei \( \Delta t > 0 \) und \( t \in [0,\inf ) \)
+  \begin{align*}
+    a (t+\Delta t) &= a(t) + \text{Reaktionsverlust/-gewinn in} (t,t+\Delta t) \\
+                   &= a(t) \int_t^{t +\Delta t} R_A(s) \dd s
+  \end{align*}
+  Dabei sei \( R_A(t) \) der Reaktionsverlusst/-gewinn zum Zeitpunkt t. \\
+  \underline{Konstituive Annahme}:
+  \[ R_A(t) = - \underbrace{k}_{Reaktionsgeschwindichkeit, > 0}  a(t) b(t) \]
+  Also: \[ a(t + \Delta t) = a(t) - \int_t^{t + \Delta t} k a(s) b(s) \dd s \]
+  \uline{Regularit\"atsannahme}: \[ a,b,c \in C^1 ([0,\inf)) \]
+  Daraus folgt
+  \begin{align*}
+    & & a(t + \Delta t) &= a(t) - \Delta t k a(t) b(t) + \mathcal{O} (\Delta t^2) \\
+    &\Leftrightarrow & \frac{a(t+\Delta t) - a(t)}{\Delta t} &= - k a(t) b(t) +
+    \mathcal{O}(\Delta t) \\
+    &\xRightarrow{\Delta t \rightarrow 0} & a'(t) &= - k a(t) + b(t)
+    \myTag[1.3]{**1}
+  \end{align*}
+  Mit derselben Argumentation gilt
+  \[ \begin{aligned}
+    b'(t) &= - k a(t) b(t) \\
+    c'(t) &= + k a(t) b(t)
+  \end{aligned} \myTag[1.3]{**} \]
+  Wie kann man \eqref{1.3**} l\"osen ?
 
-Sei \( D \subseteq \mathbb{R}^d, d \in \mathbb{N} \) offen beschrenkt. In \( D \) seien die Stoffe \( A,B, C \) r\"aumlich homogen verteilt.
-\begin{align*}
-  a &= a[A]  & \text{Konzentration von } &A \text{ in}
-  \frac{\text{Mol}}{\text{Volumen}} \\
-  b &= b[B]  & &B  \\
-  c &= c[C]  & &C 
-\end{align*}
-Bimollekulare Reaktion \[ 1 A + 1 B \rightharpoonup 1C \myTag[1.3]{*} \] Wir
-wollen ein quantitatives Modell f\"ur \eqref{1.3*} herleiten. Gesucht sind 
-\begin{align*}
-a &= a(x,t) = a(t) \quad \text{(r\"aumliche Homogenit\"at)} \\
-  b &= b(x,t) = b(t) \\
-  c &= c(x,t) = c(t)
-\end{align*}
-F\"ur \( t_0 = 0 \) sind die Anfangskonzentrationen \[ a(0) = a_0 \geq 0, \quad
-b(0) = b_0 \geq 0, \quad c(0) = c_0 \geq 0 \]
-gegeben. W\"ahle \[ u = (a,b,c)  \in U, U = [0,\inf)^3 \]
-Es sei \( \Delta t > 0 \) und \( t \in [0,\inf ) \)
-\begin{align*}
-  a (t+\Delta t) &= a(t) + \text{Reaktionsverlust/-gewinn in} (t,t+\Delta t) \\
-                 &= a(t) \int_t^{t +\Delta t} R_A(s) \dd s
-\end{align*}
-Dabei sei \( R_A(t) \) der Reaktionsverlusst/-gewinn zum Zeitpunkt t. \\
-\underline{Konstituive Annahme}:
-\[ R_A(t) = - \underbrace{k}_{Reaktionsgeschwindichkeit, > 0}  a(t) b(t) \]
-Also: \[ a(t + \Delta t) = a(t) - \int_t^{t + \Delta t} k a(s) b(s) \dd s \]
-\uline{Regularit\"atsannahme}: \[ a,b,c \in C^1 ([0,\inf)) \]
-Daraus folgt
-\begin{align*}
-  & & a(t + \Delta t) &= a(t) - \Delta t k a(t) b(t) + \mathcal{O} (\Delta t^2) \\
-  &\Leftrightarrow & \frac{a(t+\Delta t) - a(t)}{\Delta t} &= - k a(t) b(t) +
-  \mathcal{O}(\Delta t) \\
-  &\xRightarrow{\Delta t \rightarrow 0} & a'(t) &= - k a(t) + b(t)
-  \myTag[1.3]{**1}
-\end{align*}
-Mit derselben Argumentation gilt
-\[ \begin{aligned}
-  b'(t) &= - k a(t) b(t) \\
-  c'(t) &= + k a(t) b(t)
-\end{aligned} \myTag[1.3]{**} \]
-Wie kann man \eqref{1.3**} l\"oesen ?
-
-F\"uer \( S = a -b \) gilt gerade
-% TODO: Wie funktioniert align richtig fuer solche sachen?
-\begin{align*}
-  S'(t) &= a'(t) - b'(t) & &= 0 \\
-  \Rightarrow S(t) &= a(t) - b(t) & &=: S_0
-\end{align*}
-Auswertung bei \( t = 0\) liefert \[ S_0 = a_0 - b_0 \Leftarrow b(t) = a(t) -
-S_0 \]
-Sei o.B.d.A. \( S_0 \leq 0 (S_0 < 0 \text{ analog}) \). Dann gilt
-\begin{align*}
-a'(t) = - k a(t) (a(t) - S_0)
-\xRightarrow{T.d.V.\footnote{Trennung der Varialen}} a(t) = \frac{a_0 S_0}{a_0 - b_0 e^{-k s_0 t}}
-\Rightarrow b(t) = \frac{a_0 S_0}{a_0 - b_0 e^{-k s_0 t}}-S_0
-\end{align*}
-Au\ss erdem 
-\begin{align*}
-  c(t) &= c_0 +k \int_0^t a(s) b(s) \dd s \\
-       &= c_0 + \int_0^t - b'(t) \dd s \\
-       &= c_0 - b(t) + b_0 \\
-       &= c_0 + b_0 - b(t)
-\end{align*}
-\begin{pspicture}
-  Fig 1
-\end{pspicture}
+  F\"ur \( S = a -b \) gilt gerade
+  % TODO: Wie funktioniert align richtig fuer solche sachen?
+  \begin{align*}
+    S'(t) &= a'(t) - b'(t) & &= 0 \\
+    \Rightarrow S(t) &= a(t) - b(t) & &=: S_0
+  \end{align*}
+  Auswertung bei \( t = 0\) liefert \[ S_0 = a_0 - b_0 \Leftarrow b(t) = a(t) -
+  S_0 \]
+  Sei o.B.d.A. \( S_0 \leq 0 (S_0 < 0 \text{ analog}) \). Dann gilt
+  \begin{align*}
+  a'(t) = - k a(t) (a(t) - S_0)
+  \xRightarrow{T.d.V.\footnote{Trennung der Varialen}} a(t) = \frac{a_0 S_0}{a_0 - b_0 e^{-k s_0 t}}
+  \Rightarrow b(t) = \frac{a_0 S_0}{a_0 - b_0 e^{-k s_0 t}}-S_0
+  \end{align*}
+  Au\ss erdem 
+  \begin{align*}
+    c(t) &= c_0 +k \int_0^t a(s) b(s) \dd s \\
+         &= c_0 + \int_0^t - b'(t) \dd s \\
+         &= c_0 - b(t) + b_0 \\
+         &= c_0 + b_0 - b(t)
+  \end{align*}
+  \begin{pspicture}
+    Fig 1
+  \end{pspicture}
 
 \end{Bsp}
 
@@ -203,7 +205,7 @@ Au\ss erdem
     [PtCO]&: s \quad & O2&: 1\\
       Pt&: z &&
   \end{align*}
-  PtO und PtCO werden st\"andig nachgef\"uehrt ( sind in beliebiger konzentration vorhanden)
+  PtO und PtCO werden st\"andig nachgef\"uhrt ( sind in beliebiger konzentration vorhanden)
   \begin{align*}
     x'(t) &=   k_1 z z + k_1 1 z z \\
           &   -k_{-1} x x - L_1 x x \\
@@ -215,21 +217,21 @@ Au\ss erdem
     s'(t) &=   k_4 z - k_{-4} s
   \end{align*}
 
-  Dieses System ist wahlscheinlich nicht eakt l\"oesbar. Es gilt jedoch noch die
+  Dieses System ist wahrscheinlich nicht exakt l\"osbar. Es gilt jedoch noch die
   globale Invariante \[ x'(t) + y'(t) + s'(t) + z'(t) = 0 \forall_{t>0} \]
 
 \end{Bsp}
 
 \begin{Bsp}[Verbreitung von Ger\"uchte]
-  Sei eine (menschliche) Population der gr\"oe\ss e \( N \in \NN \) gegeben.
+  Sei eine (menschliche) Population der gr\"o\ss e \( N \in \NN \) gegeben.
 
   Gesucht: Anzahl der Menschen \( Z= Z(t) \in \UU := [0,N] \), die zum Zeitpunkt
   \( t \geq 0 \) eine bestimmte Nachricht kennen.\\ 
   \uline{Kommunikationsmodell:}
-  \begin{enumerate}[label=(\roman*)]
+  \begin{enumerate}[(i)]
     \item Zum Zeitpunkt \( t_0 = 0 \) kennen \( z_0 \geq 0 \) Menschen die Nachricht.
     \item Die Nachricht wird nur duch Gespr\"ache ``unter vier Augen''
-      weitergegeben ( Nachricht = Ger\"uechte).
+      weitergegeben ( Nachricht = Ger\"uchte).
     \item Jeder Informierte hat in der Zeitspanne \( \Delta t > 0 \) genau \(
       k \Delta t\) Vier-Augen-Kontakte mit anderen Menschen (Informierte und
       nicht-Informierte)
@@ -251,7 +253,7 @@ Au\ss erdem
     Fig 2: Langzeitverhalten von Z(t)
   \end{pspicture}
   
-  Wie kann man \eqref{1.5**} numerisch L\"oesen? Auf der Basis des diskreten Modells kann man den Algorithmus
+  Wie kann man \eqref{1.5**} numerisch L\"osen? Auf der Basis des diskreten Modells kann man den Algorithmus
   \begin{align*}
     Z^{n+1} &= Z^n + \Delta t k \frac{N-Z^n}{N}Z^n, \quad (N \in \NN) \\
     Z^0 &= Z_0
@@ -261,7 +263,7 @@ Au\ss erdem
 
 \begin{Bsp}[Bewegunsgleichungen]
   Fuer \( N \in \NN \) betrachten wir die d-dimesionale Bewegung von Masseteilchen \( p_i ( i=1,\dotsc,N) \) mit Masse \( m_i > 0 \)
-  Anwendungen: z.B. die Dynamik von Planeten, Sandk\"oernern oder die Molek\"uldynamik.
+  Anwendungen: z.B. die Dynamik von Planeten, Sandk\"ornern oder die Molek\"uldynamik.
   Gesucht: Position \( x_i = x_i(t) \in \RR^d, i = 1,\dotsc,N \) des Masseteilchen \( p_i \) zum Zeitpunkt \( t > 0 \)
 
   Wir schr\"anken uns auf Bewegungen ein, die unter Einfluss einens Potentialfelds \( V:\RR^{dN} \leftarrow \RR \) stattfinden. Falls das Potentialfeld duch ein Gravitationsfeld gegeben ist, gilt z.B.
@@ -274,7 +276,7 @@ Au\ss erdem
         \vdots \\
         \frac{\partial}{\partial x_id} V(x_1, \dots, x_N)
   \end{pmatrix} \] 
-  F\"uer das Gravitationspotenzial gilt peziell \[ m x_i'')t) = m_i
+  F\"ur das Gravitationspotenzial gilt peziell \[ m x_i'')t) = m_i
     \sum_{\stackrel{j=1}{j \neq i}^N} \frac{m_j}{| x_i(t)-x_j(t)|_2^3}
     (x_i(t)-x_j(t)) \]
   Zum Zeitpunkt \( t= 0 \) sind die Anfangspositionen- und -geschwindichkeiten
@@ -288,7 +290,7 @@ Au\ss erdem
       \\\vdots  \\
 u_{2N}(t) \end{pmatrix} \]
 
-  Damit erhalten wir f\"uer \( u \) das AWP \begin{align*}
+  Damit erhalten wir f\"ur \( u \) das AWP \begin{align*}
     u'(t) &= \begin{pmatrix} u_1(t) \\
         \frac{-1}{m_1} \frac{\partial}{\partial x_1} V(u_1(t),u_3(t), \dotsc, u_{2N-1}(t)) \\
         u_4(t) \\ \vdots \\ 
@@ -298,10 +300,10 @@ u_{2N}(t) \end{pmatrix} \]
   \end{align*}
   Damit ist gerade \[ \UU = \{ (x_1,v_1,\dotsc,x_N,v_N)\in\RR^{2dN} |
     x_1,\dotsc,x_N \text{ paarwerise verschieden} \} \]
-  Im Graviationsfall sollte \eqref{1.6*} eine klassische L\"oessung auf \(
+  Im Graviationsfall sollte \eqref{1.6*} eine klassische L\"ossung auf \(
   I=[0,\infty] \) besitzen (, wenn die physikalische Realit\"ate korret
   beschreibt). \\
-  F\"uer \eqref{1.6*} ist die ``nat\"uerliche'' Energie gerade \begin{align*} E(t) =
+  F\"ur \eqref{1.6*} ist die ``nat\"urliche'' Energie gerade \begin{align*} E(t) =
     \text{kinetische Energie} + \text{Potentialenergie} \\
     &= \frac{1}{2} \sum_{i=1}^N m_i (x_i'(t))^2 + V(x_1(t),\dotsc, x_N(t))
   \end{align*}
@@ -315,7 +317,7 @@ u_{2N}(t) \end{pmatrix} \]
     V(x_1(t),\dotsc,x_1(t))' = 0
     \Rightarrow \frac{\dd}{\dd t} E(t) = 0
   \end{align*}
-  Falls eine klassische L\"oesung in \( [0, \infty] \) existiert, haben wir \[
+  Falls eine klassische L\"osung in \( [0, \infty] \) existiert, haben wir \[
     E(t) = E(0) = \sum_{i = 1}^N \frac{1}{2}m_i(v_i^0)^2 + V(x_1^0,\dotsc,x_N^0)
   \]
   \( E \) ist also eine globale Invariante!
@@ -323,13 +325,13 @@ u_{2N}(t) \end{pmatrix} \]
   \myQEDEnd
 \end{Bsp}
 
-\begin{Bsp}[L\"oessungsintervalle]
-  Sei \( m = 1 \) und \( u_0 = 0 \). F\"uer \( a \in \RR \) betrachtet das AWP 
+\begin{Bsp}[L\"ossungsintervalle]
+  Sei \( m = 1 \) und \( u_0 = 0 \). F\"ur \( a \in \RR \) betrachtet das AWP 
   \begin{align*}
     u'(t) = U(t)^2 + a, \quad (t\in I) \\
     u(0) = U_0 = 0
   \end{align*}
-  \begin{enumerate}[label=(\alph*)]
+  \begin{enumerate}[(a)]
     \item \( a = 0 \Rightarrow u(t) = 0 \) auf \( I = \RR \) \\
     \item \( a < 0 \Rightarrow u = u(t) = - \sqrt{-a} \tanh(\sqrt{-1} t) \) auf
       \( I = \RR \) \\
@@ -340,7 +342,7 @@ u_{2N}(t) \end{pmatrix} \]
 
 \begin{Bsp}[Eindeutigkeit]
   Sei \( m= 1, a_0 = 0 \). Betrachte das AWP \[ u'(t) = \sqrt{u(t)}, u(0)=0 \]
-  Es existiert die L\"oesungen \[ u_1(t) = 0, \quad u_2(t) = \frac{t^2}{u},
+  Es existiert die L\"osungen \[ u_1(t) = 0, \quad u_2(t) = \frac{t^2}{u},
     \quad u_3(t) = \left\{\begin{aligned} 0, t< 0 \\ \frac{t^2}{4}, t \geq 0
     \end{aligned} \right. \]
     auf ganz \( \RR \)
@@ -348,10 +350,10 @@ u_{2N}(t) \end{pmatrix} \]
     \myQEDEnd
 \end{Bsp}
 
-F\"uer einen Zusandsraum \( \UU \subseteq \RR^m, u_0 \in \UU, t_0 \in \RR \)
+F\"ur einen Zusandsraum \( \UU \subseteq \RR^m, u_0 \in \UU, t_0 \in \RR \)
 betrachen wir \eqref{1.1},\eqref{1.2}, d.h. \[ u'(t) = f(t,U(t)), u(0) = u_0 \]
 Dann gilt
-\begin{Satz}[Picard-Lindel\"oef]
+\begin{Satz}[Picard-Lindel\"of]
   Sei \( a > 0 \) und weiter \( b \geq 0 \) so gew\"awhlt, dass \(
   \overline{B_b(u_0)} \subset \UU \) gilt. Au\ss erdem sei \( L = L(a,b,u_0) > 0 \)
   eine Konstante, sodass alle \(t \in [t_0-a,t_0+a] \) und alle \( w,\tilde{w}
@@ -360,16 +362,147 @@ Dann gilt
   | \] gildt (Lipschitz-Stetigkeit in \( [t_0-a,t_0+a] \times \overline{B_b(u_0)} \)
   )
   Dann haben wir
-  \begin{enumerate}[label=(\roman*)]
+  \begin{enumerate}[(i)]
   \item Es existiert eine Zahl \( \alpha \in (0,a], sodass \eqref{1.1}
-    \eqref{1.2} \) eine L\"oesung \( u \in C^1(t_0-a,t_0+a,\UU) \) besitzt \\
-  \item Es existiert genau eine L\"oesung von \eqref{1.1},\eqref{1.2} in \(
+    \eqref{1.2} \) eine L\"osung \( u \in C^1(t_0-a,t_0+a,\UU) \) besitzt \\
+  \item Es existiert genau eine L\"osung von \eqref{1.1},\eqref{1.2} in \(
     t_0-a,t_0+a \) \\
-  \item F\"uer \( \alpha \) in (i),(ii) gilt in Falle \( \UU = \RR^m, \) \[
+  \item F\"ur \( \alpha \) in (i),(ii) gilt in Falle \( \UU = \RR^m, \) \[
       \alpha = \min{a, \frac{b}{A}}, \quad A := \max_{\stackrel{t\in
          [t_0-a,t_0+a]}{w \in \overline{B_b(u_0)}}} \] gilt
   \end{enumerate}
 \end{Satz}
 
+
+\begin{proof}
+  O.B.d.A. sei \( I = [t_0-a,t_0+a] \) und zun\"achst \(\UU = \RR^m \)
+  \begin{enumerate}[(i)]
+    \item Wir betrachten das Fixpunktproblem \[ u(t) = T[u](t), \quad t\in I
+      \myTag[1.9]{*} \] f\"ur die unbekannte Funktion \( u \in C^0(I,\RR^m) \).
+      Dabei sei \( T \) durch \[ T : \left\{ \begin{array}{lr} C^0 (I)
+            \rightarrow C^0(I) \\ u \mapsto T[u](t) := U_0 +
+        \int_{t_0}^t f(s,u(s)) \dd s \end{array} \right. \] Falls eine L\"osung \( u
+        \in C^0(I, \RR^m) \) von \eqref{1.9*} existiert, gelt auch \( u \in
+        C^1(I,\RR^m) \). Dann ergibt Differentiation die Fixpunktgleichung \[
+        u(t) = T[u](t) = u_0 + \int_{t_0}^t f(s,u(s)) \dd s\] gerade
+        \eqref{1.1}. Da auch \( u(0) = u_0 \) gilt, haben wir eine L\"osung
+        gefunden.
+
+        Weiter gelte die globale Lipschitschbedingung \[ |f(t,u) - f(t, \tilde{u}
+          )| \leq L | w - \tilde{w} |, \quad \forall_{t\in I, w,\tilde{w} \in \RR}
+          \myTag[1.9]{**} \]
+          Sei \( \beta > 0 \) beliebig aber gest. Der Raum \[
+            X= (C^0(I,\RR^m),||.||_\beta ) \]
+          mit \[
+            ||w||_\beta = max{|w(t)| e^{-bt} | t\in I } \]
+          ist ein Banachraum. Es gilt f\"ur den abgeschlossenen Teilbaum
+          \( D=X\subseteq X \) gelte \[
+            T(D) \subseteq D. \]
+          Es gilt f\"ur  \( w, \tilde{w} \in D \) und \( t \in I \) \begin{align*}
+            \left| T[w](t)-T[\tilde{w}](t) \right| 
+            &= \left| \int_{t_0}^t f(s,w(s))-f(s,\tilde{w}(s)) \dd s \right| \\
+            & \quad \leq \left| \int_{t_0}^t \underbrace{| f(s,w(s))
+              -f(s,\tilde{w}(s))|}_{\leq L |w(s)-\tilde{w}(s)|} \right|
+              \underbrace{e^{-\beta s} e^{\beta s}}_{ = 1} \dd s \\
+              & \quad \leq || w - \tilde{w}||_\beta \frac{1}{\beta}(e^{\beta
+              t}-e^{\beta t})
+              & \quad \leq \frac{L}{\beta} ||w = \tilde{w}||_\beta e^{\beta t} \\
+              \MoveEqLeft \Rightarrow e^{-\beta t}|T[w](t)) - T[\tilde{w}||_\beta
+                \leq \frac{L}{\beta}||w-\tilde{w}||\beta \\
+              \MoveEqLeft \Rightarrow ||T[w]-T[\tilde{w}||_\beta 
+                \leq \frac{L}{\beta}||w-\tilde{w}||_\beta \leq
+                \frac{1}{2}||w-\tilde{w}||_\beta
+        \end{align*}
+
+        f\"uer \( \beta = 2L \).
+
+
+        % Vorlesung 2014-04-16 Ende
+
+    Im n\"chsten Schritt beweisen wir die Existenz einer L\"orsung von \eqref{1.1},
+    \eqref{1.2} ohne die Einschrenkung auf globale Libschitzstetigkeit von \( f \).
+    Dazu betrachte man das ``abgeschnittene'' Problem
+    \[ \bar{u}'(t)=\bar{f}(t,\bar{u}(t)), \quad \bar{u}(t) = u_0. \myTag[1.9]{a} \]
+    Dabei sei \( \bar{f} \in C^0(I\times \RR^m, \RR^m) \) eine Funktion mit 
+    \begin{enumerate}[(1)]
+      \item \( \bar{f}(t,w) = f(t,w) \forall_{w\in\overline{B_b(u_0)}} \)
+      \item \( \bar{f} \) erf\"ullt \eqref{1.9**} f\"ur ein  \( L = \bar{L} > 0 \)
+      \item \( max_{\substack{t \in I, w \in \RR^m}} {|\bar{f}(t,w)|} \leq A \)
+    \end{enumerate} 
+    Mit diesen Vorraussetzungen existiert nun eine L\"osung \eqref{1.9a} in \(
+    I=[t_0,t_0+a] \)
+    Es gilt f\"ur \( t \in I \) \[ | \bar{u}'(t) \leq | \bar{f}(t,\bar{u}(t)|
+    \stackrel{\text{(3)}}{\leq} A \] Also kann man \[ \bar{u}(t) \in B_b(u_0) \text{
+    f\"ur } t \in [t_0,t_0+\alpha) \] mit \[ \alpha = \min{a,\frac{b}{A}}. \]
+    garantieren. \\
+    Da \( \overline{B_b(u_0)} \subseteq \UU \) gilt, muss \[ \bar{\UU}\in U
+    \text{ f\"ur } t \in  [t_0,t_0+\alpha] \] gelte. Dann ist \( \bar{u} \) aber
+    eine L\"osung von \eqref{1.1}, \eqref{1.2} (nach (1)). Damit sind (i) und
+    (iii) bewiesen.
+
+    \item Da \( u \in C^1(I, \UU) \) als L\"osung von \eqref{1.1}, \eqref{1.2}
+      automatisch ein Fixpunkt in \( T \) ist, muss \( u \) ( als eindeutiger Fixpunkt )
+      auch eindeutig bestimt sein.
+  \end{enumerate}
+\end{proof}
+
+In einigen F\"allen kann die lokale L\"oesbarkeit auf globale L\"oesbarkeit
+\"uebertragen werden.
+
+\begin{Kor}[Globale L\"oesbarkeit] \label{1.10}
+  %\indexWhat{Globale L\"oesugn}
+  % TODO what to do with labels and Index
+  Es gelte die \uline{A-Priori Absch\"aetzung} \( u \in C^1(\RR,\UU) \) sei 
+  (globale L\"oesung) \eqref{1.1}, \eqref{1.2}. \[ 
+    \Rightarrow \exists_{\bar{b} > 0} \max_{\substack t \in \RR} ||U - u_0||
+    \leq \bar{b} \]
+  F\"uer \( f \in C^1(\RR\ times \UU, \RR^m) \) ist \eqref{1.1}, \eqref{1.2}
+  global L\"oesbar.
+\end{Kor}
+\begin{proof} [H\"Ue] \myQEDEnd 
+\end{proof}
+\begin{Bsp}[nochmal die Bewegungsgleichungen]
+  Man betrachte die Gleichungen aus Bsp 1.6. F\"uer jede L\"oesung von \( (x(t),
+  x'(t)) \) gilt gerade \[ \dfrac{d}{dt} E(t) = \dfrac{d}{dt}(\sum_{i=1}^N
+  \frac{m_i | x'_i (t)|^2}{2} + V(x_1,\dotsc,x_N)) = 0 \] Insbesondere gilt dann
+  \[ \sum_{i=0}^N m_i \frac{|x'_i(t)|^2}{2} + V(x_1,\dotsc,x_N) \leq E(Q)
+  \myTag[1.11]{*} \]
+  Falls z.B. \( V(x_1,\dotsc,x_N) \rightarrow \infty \) f\"uer \( |x_1|,\dotsc,|x_N|
+  \rightarrow \infty \) gilt, ergibt \eqref{1.11*}, dass die L\"oesugn \( x_1,
+  \dotsc, x_N, x'_1, \dotsc, x'_N \) global beschr\"aenkt sind. Dann liefert
+  \ref{1.10} dir globale L\"oesbarkeit.
+  \myQEDEnd
+\end{Bsp}
+
+\chapter{Numerische Verfahren f\"uer Anfanswertproobleme}
+
+\section{Einschrittverfahren}
+
+Wir betrachten F\"uer \( f\in C^0(I\times \RR^m, \RR^m) \) mit \( I = [0,T] \) (
+und \( U = \RR^m \) ) das Problem \eqref{1.1}, \eqref{1.2}. Es exisitert genau
+eine L\"oesung \[ u \in C^1(I, \RR^m) \]
+Um ein numerisches Verfahren zur Approximation von \( u \) zu konstruieren, sei
+f\"uer \( N \in \NN \) der Vector \[ h:= (h_0,\dotsc,h_N-1)^T \in ((0,T])^N \]
+mit \[ \sum_{j=0}^{N-1}h_j=T  \]
+Weiter konstruiren wir ein \uline{Gitter \( I_k \)} zu \( I \) durch \[
+  I_k = {t_0 = 0, t_1, t_2, \dotsc, t_N}. \]
+Weiter f\"uer \( j= 1,\dotsc,N \) gelte \[t_j := t_{j-1} + h_{j-1} \quad (\text{also
+insbesondere} t_N=T) \] 
+
+Als \uline{Gitterweite von \( I_k  \)} bezeichen wir die Zahl \[ |h| =
+  \max{\substack j = 0,\dotsc,N-1}{h_j} \]
+Falls \( h_0 = h_1 = \cdots = h_{N-1} \) gilt, sprechen wir von einem
+\uline{\"aequidistanten Gitter}. \\
+Ziel der Einschrittverfahren ist die Bestimmung einer \uline{Gitterfunktion}
+\( u_k:I_k\rightarrow\RR^m \) f\"uer gegebene Gitter.
+
+\begin{Def}[Explizite Einschrittverfahren]
+  Sei ein Gitter $I_k$ gegeben und sei \[
+    \phi \in C^0(I^2\times \RR^m,\RR^m) \]
+  gegeben. Dann hei\ss t das Verfahren \[
+    u_j = u_{j-1} + h_{j-1} \cdot \phi (h_{j-1},t_{t-1},u_{j-1}), \quad (j = 1,\dotsc,N) \]
+    explizites \uline{Einschrittverfahren} (ESV) und \( \phi \)
+    \uline{Incrementfunktion}
+\end{Def}
 
 \end{document}
