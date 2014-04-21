@@ -56,7 +56,7 @@
 
 \author{\color{dkgray}\textbf{Vorlesungsmitschrieb \footnote{Webseite fuer dieses
   Dokument \url{https://github.com/jrapp/num2script}}} \ \\ \small{\color{dkgray}Stand \today}}
-\date{\Large\color{dkgray}\textbf{Universität Stuttgart, Wintersemester 2013/2014}}
+\date{\Large\color{dkgray}\textbf{Universitï¿½t Stuttgart, Wintersemester 2013/2014}}
 
 \renewcommand{\thechapter}{\Roman{chapter}}
 
@@ -484,17 +484,17 @@ eine L\"oesung \[ u \in C^1(I, \RR^m) \]
 Um ein numerisches Verfahren zur Approximation von \( u \) zu konstruieren, sei
 f\"uer \( N \in \NN \) der Vector \[ h:= (h_0,\dotsc,h_N-1)^T \in ((0,T])^N \]
 mit \[ \sum_{j=0}^{N-1}h_j=T  \]
-Weiter konstruiren wir ein \uline{Gitter \( I_k \)} zu \( I \) durch \[
-  I_k = {t_0 = 0, t_1, t_2, \dotsc, t_N}. \]
-Weiter f\"uer \( j= 1,\dotsc,N \) gelte \[t_j := t_{j-1} + h_{j-1} \quad (\text{also
-insbesondere} t_N=T) \] 
+Weiter konstruieren wir ein \uline{Gitter \( I_h \)} zu \( I \) durch \[
+  I_h = \{t_0 = 0, t_1, t_2, \dotsc, t_N\}. \]
+Weiter f\"ur \( j= 1,\dotsc,N \) gelte \[t_j := t_{j-1} + h_{j-1} \quad (\text{also
+insbesondere } t_N=T) \] 
 
-Als \uline{Gitterweite von \( I_k  \)} bezeichen wir die Zahl \[ |h| =
+Als \uline{Gitterweite von \( I_h  \)} bezeichen wir die Zahl \[ |h| =
   \max{\substack j = 0,\dotsc,N-1}{h_j} \]
 Falls \( h_0 = h_1 = \cdots = h_{N-1} \) gilt, sprechen wir von einem
 \uline{\"aequidistanten Gitter}. \\
 Ziel der Einschrittverfahren ist die Bestimmung einer \uline{Gitterfunktion}
-\( u_k:I_k\rightarrow\RR^m \) f\"uer gegebene Gitter.
+\( u_h:I_h\rightarrow\RR^m \) f\"uer gegebene Gitter.
 
 \begin{Def}[Explizite Einschrittverfahren]
   Sei ein Gitter $I_k$ gegeben und sei \[
